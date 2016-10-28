@@ -47,7 +47,7 @@ class SharingConnection extends Component {
 
 	disconnect = () => {
 		if ( ! this.props.isDisconnecting ) {
-			this.props.onDisconnect( this.props.connection );
+			this.props.onDisconnect( [ this.props.connection ] );
 		}
 	};
 
