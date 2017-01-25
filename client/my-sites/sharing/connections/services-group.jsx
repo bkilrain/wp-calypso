@@ -12,6 +12,7 @@ import { getEligibleKeyringServices } from 'state/sharing/services/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import SectionHeader from 'components/section-header';
 import Service from './service';
+import * as services from './services';
 import ServicePlaceholder from './service-placeholder';
 
 /**
@@ -36,8 +37,13 @@ class SharingServicesGroup extends Component {
 				<SectionHeader label={ this.props.title } />
 				<ul className="sharing-services-group__services">
 					{ this.props.services.length
-						? this.props.services.map( ( service ) =>
-							<Service key={ service.ID } service={ service } /> )
+						? this.props.services.map( ( service ) => {
+							const ServiceComponent = services.hasOwnProperty( service.ID )
+								? services[ service.ID ]
+								: Service;
+
+							return <ServiceComponent key={ service.ID } service={ service } />;
+						} )
 						: times( NUMBER_OF_PLACEHOLDERS, ( index ) =>
 							<ServicePlaceholder key={ 'service-placeholder-' + index } /> )
 					}

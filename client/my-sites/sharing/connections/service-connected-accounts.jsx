@@ -58,7 +58,7 @@ class SharingServiceConnectedAccounts extends Component {
 				<ul className="sharing-service-connected-accounts">
 					{ this.props.connections.map( ( connection ) =>
 						<Connection
-							key={ connection.keyring_connection_ID }
+							key={ connection.keyring_connection_ID || connection.ID }
 							connection={ connection }
 							isDisconnecting={ this.props.isDisconnecting }
 							isRefreshing={ this.props.isRefreshing }
