@@ -41,6 +41,7 @@ export getReaderTeams from './get-reader-teams';
 export getSharingButtons from './get-sharing-buttons';
 export getSiteIconId from './get-site-icon-id';
 export getSiteIconUrl from './get-site-icon-url';
+export getSiteStatsQueryDate from './get-site-stats-query-date';
 export getTimezonesByContinent from './get-timezones-by-continent';
 export getUpcomingBillingTransactions from './get-upcoming-billing-transactions';
 export hasBrokenSiteUserConnection from './has-broken-site-user-connection';
