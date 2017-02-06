@@ -42,6 +42,7 @@ import toolbarPinPlugin from './plugins/toolbar-pin/plugin';
 import insertMenuPlugin from './plugins/insert-menu/plugin';
 import embedReversalPlugin from './plugins/embed-reversal/plugin';
 import EditorHtmlToolbar from 'post-editor/editor-html-toolbar';
+import pasteTrack from './plugins/wpcom-paste-track/plugin';
 
 [
 	wpcomPlugin,
@@ -63,7 +64,8 @@ import EditorHtmlToolbar from 'post-editor/editor-html-toolbar';
 	afterTheDeadlinePlugin,
 	wptextpatternPlugin,
 	toolbarPinPlugin,
-	embedReversalPlugin
+	embedReversalPlugin,
+	pasteTrack
 ].forEach( ( initializePlugin ) => initializePlugin() );
 
 /**
@@ -133,6 +135,9 @@ const PLUGINS = [
 
 if ( config.isEnabled( 'post-editor/insert-menu' ) ) {
 	PLUGINS.push( 'wpcom/insertmenu' );
+}
+if (config.isEnabled( 'post-editor/track-paste-events' ) ) {
+	PLUGINS.push( 'wpcom/pastetrack' );
 }
 
 const CONTENT_CSS = [
