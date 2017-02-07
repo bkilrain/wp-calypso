@@ -161,6 +161,7 @@ module.exports = React.createClass( {
 							url={ `/stats/${ this.props.period.period }/${ site.slug }` }
 						>
 							<DatePicker
+								period={ this.props.period.period }
 								date={ this.props.date }
 								query={ query }
 								statsType="statsTopPosts"
