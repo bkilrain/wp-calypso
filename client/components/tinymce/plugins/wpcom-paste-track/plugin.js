@@ -7,27 +7,37 @@ import debugFactory from 'debug';
 
 const debug = debugFactory( 'calypso:tinymce-plugins:wpcom-paste-track' );
 
+const SOURCE_GOOGLE_DOCS = 'google_docs';
+const SOURCE_UNKNOWN = 'unknown';
+
 function pasteTrack( editor ) {
 	debug( 'init' );
 
 	/**
 	 * Records the event.
 	 *
-	 * @param {Array} types - An array containing the available types for the pasted content.
-	 * @param {String} mode - One of tinyMCE modes, 'html' or 'tinymce'.
+	 * @param {String} types - A string containing the available types for the pasted content, separated by comma.
+	 * @param {String} mode - One of tinyMCE modes: 'html' or 'tinymce'.
 	 */
 	function recordEvent( types, mode ) {
 		debug( 'track paste event ' );
 		analytics.tracks.recordEvent( 'calypso_editor_content_paste', {
 			types: types,
 			mode: mode,
-			is_gdocs: isGoogleDocsType( types )
+			source: getSource( types ) // for visualising purposes, group types into known sources
 		} );
 	}
 
-	function isGoogleDocsType( types ) {
+	function isGoogleDocs( types ) {
 		return ( types.indexOf( 'application/x-vnd.google-docs-image-clip+wrapped' ) > -1 ) ||
 		( types.indexOf( 'application/x-vnd.google-docs-document-slice-clip+wrapped' ) > -1 );
+	}
+
+	function getSource( types ) {
+		if ( isGoogleDocs( types ) ) {
+			return SOURCE_GOOGLE_DOCS;
+		}
+		return SOURCE_UNKNOWN;
 	}
 
 	function flattenArray( orgTypes ) {

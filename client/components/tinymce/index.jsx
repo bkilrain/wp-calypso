@@ -130,14 +130,12 @@ const PLUGINS = [
 	'wpcom/toolbarpin',
 	'wpcom/contactform',
 	'wpcom/sourcecode',
-	'wpcom/embedreversal'
+	'wpcom/embedreversal',
+	'wpcom/pastetrack'
 ];
 
 if ( config.isEnabled( 'post-editor/insert-menu' ) ) {
 	PLUGINS.push( 'wpcom/insertmenu' );
-}
-if (config.isEnabled( 'post-editor/track-paste-events' ) ) {
-	PLUGINS.push( 'wpcom/pastetrack' );
 }
 
 const CONTENT_CSS = [
