@@ -12,7 +12,6 @@ import { requestTimezones } from 'state/timezones/actions';
 
 export class QueryTimezones extends Component {
 	static propTypes = {
-		requestingTimezones: PropTypes.bool,
 		requestTimezones: PropTypes.func
 	};
 
@@ -25,6 +24,4 @@ export class QueryTimezones extends Component {
 	}
 }
 
-export const mapDispatchToProps = ( { requestTimezones } );
-
-export default connect( null, mapDispatchToProps )( QueryTimezones );
+export default connect( null, { requestTimezones } )( QueryTimezones );

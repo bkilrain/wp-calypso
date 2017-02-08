@@ -9,9 +9,6 @@ import { spy } from 'sinon';
  */
 import { http } from 'state/data-layer/wpcom-http/actions';
 
-// import { useSandbox } from 'test/helpers/use-sinon';
-// import useNock from 'test/helpers/use-nock';
-
 import {
 	timezonesReceive as timezonesReceiveAction,
 	timezonesRequestSuccess as timezonesRequestSuccessAction,
