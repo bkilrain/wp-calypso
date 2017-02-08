@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
-import analytics from 'lib/analytics';
-import tinymce from 'tinymce/tinymce';
 import debugFactory from 'debug';
+import tinymce from 'tinymce/tinymce';
+import { recordTracksEvent } from 'state/analytics/actions';
 
 const debug = debugFactory( 'calypso:tinymce-plugins:wpcom-paste-track' );
 
@@ -13,6 +13,12 @@ const SOURCE_UNKNOWN = 'unknown';
 function pasteTrack( editor ) {
 	debug( 'init' );
 
+	const store = editor.getParam( 'redux_store' );
+	if ( ! store ) {
+		debug( 'store not found, do not bind events' );
+		return;
+	}
+
 	/**
 	 * Records the event.
 	 *
@@ -21,11 +27,11 @@ function pasteTrack( editor ) {
 	 */
 	function recordEvent( types, mode ) {
 		debug( 'track paste event ' );
-		analytics.tracks.recordEvent( 'calypso_editor_content_paste', {
+		store.dispatch( recordTracksEvent( 'calypso_editor_content_paste', {
 			types: types,
 			mode: mode,
 			source: getSource( types ) // for visualising purposes, group types into known sources
-		} );
+		} ) );
 	}
 
 	function isGoogleDocs( types ) {
