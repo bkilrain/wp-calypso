@@ -59,23 +59,23 @@ export const http = ( {
 		return badRequest();
 	}
 
-	// `apiVersion` and `apiNamespace` parameters:
-	// - `apiVersion` is optional, default value is `v1`
+	// - One of `apiVersion` of `apiNamespace` should be defined
 	// - `apiVersion` and `apiNamespace` cannot be defined simultaneously
-	// - `apiVersion` must have the `v1, v2, ...` shape
-	// - `apiNamesapce` must have the `wp/v2, wpcom/v2, ...` shape
-	if ( typeof apiVersion === 'undefined' ) {
-		if ( typeof apiNamespace === 'undefined' ) {
-			actionProperties.query.apiVersion = 'v1';
-		} else if ( ! ( /^[a-z]+\/v\d+/ ).test( apiNamespace ) ) {
-			return badRequest();
-		} else {
-			actionProperties.query.apiNamespace = apiNamespace;
-		}
-	} else if ( ! ( /^v\d+/ ).test( apiVersion ) ) {
+	if (
+		( typeof apiVersion === 'undefined' && typeof apiNamespace === 'undefined' ) ||
+		( typeof apiVersion !== 'undefined' && typeof apiNamespace !== 'undefined' )
+	) {
 		return badRequest();
-	} else {
+	}
+
+	// - `apiVersion` must have the `v1, v2, ...` shape
+	if ( typeof apiVersion !== 'undefined' && ( /^v\d+/ ).test( apiVersion ) ) {
 		actionProperties.query.apiVersion = apiVersion;
+	}
+
+	// - `apiNamesapce` must have the `wp/v2, wpcom/v2, ...` shape
+	if ( typeof apiNamespace !== 'undefined' && ( /^[a-z]+\/v\d+/ ).test( apiNamespace ) ) {
+		actionProperties.query.apiNamespace = apiNamespace;
 	}
 
 	return {

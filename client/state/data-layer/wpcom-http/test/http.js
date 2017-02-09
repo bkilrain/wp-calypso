@@ -18,26 +18,6 @@ import { http } from '../actions';
 
 describe( 'http', () => {
 	describe( 'request action', () => {
-		it( 'should return a valid redux action', () => {
-			const action = http( {
-				method: 'GET',
-				path: '/path/to/endpoint',
-			} );
-
-			expect( action ).to.eql( {
-				type: WPCOM_HTTP_REQUEST,
-				body: {},
-				method: 'GET',
-				path: '/path/to/endpoint',
-				query: {
-					apiVersion: 'v1'
-				},
-				onSuccess: null,
-				onFailure: null,
-				onProgress: null,
-			} );
-		} );
-
 		it( 'should return a valid redux action defining apiVersion', () => {
 			const action = http( {
 				apiVersion: 'v2',
@@ -79,9 +59,50 @@ describe( 'http', () => {
 				onProgress: null,
 			} );
 		} );
+
+		it( 'should return a valid redux action passing random parameters into the query', () => {
+			const action = http( {
+				apiVersion: 'v2',
+				method: 'GET',
+				path: '/path/to/endpoint',
+				query: {
+					number: 10,
+					context: 'display',
+					fields: [ 'foo', 'bar' ],
+				}
+			} );
+
+			expect( action ).to.eql( {
+				type: WPCOM_HTTP_REQUEST,
+				body: {},
+				method: 'GET',
+				path: '/path/to/endpoint',
+				query: {
+					apiVersion: 'v2',
+					number: 10,
+					context: 'display',
+					fields: [ 'foo', 'bar' ],
+				},
+				onSuccess: null,
+				onFailure: null,
+				onProgress: null,
+			} );
+		} );
 	} );
 
 	describe( 'bad request action', () => {
+		it( 'should return a bad action when `apiVersion` is not defined', () => {
+			const action = http( {
+				path: '/path/to/endpoint',
+				method: 'GET',
+			} );
+
+			expect( action ).to.eql( {
+				type: WPCOM_HTTP_BAD_REQUEST,
+				error: 'request parameters object is not valid'
+			} );
+		} );
+
 		it( 'should return a bad action when `path` is not defined', () => {
 			const action = http( {
 				apiVersion: 'v1',
