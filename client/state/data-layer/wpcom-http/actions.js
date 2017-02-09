@@ -1,7 +1,15 @@
 /**
  * Internal dependencies
  */
-import { WPCOM_HTTP_REQUEST } from 'state/action-types';
+import {
+	WPCOM_HTTP_REQUEST,
+	WPCOM_HTTP_BAD_REQUEST,
+} from 'state/action-types';
+
+const badRequest = () => ( {
+	type: WPCOM_HTTP_BAD_REQUEST,
+	error: 'request parameters object is not valid'
+} );
 
 /**
  * Returns a valid WordPress.com API HTTP Request action object
@@ -18,10 +26,10 @@ import { WPCOM_HTTP_REQUEST } from 'state/action-types';
  * @param {Object} [onProgress] Redux action to call on progress events from an upload
  * @param {Object} [options] extra options to send to the middleware, e.g. retry policy or offline policy
  * @param {Object} [action] default action to call on HTTP events
- * @returns {Object} Redux action describing WordPress.com API HTTP request
+ * @return {Object} Redux action describing WordPress.com API HTTP request
  */
 export const http = ( {
-	apiVersion = 'v1',
+	apiVersion,
 	apiNamespace,
 	body = {},
 	method,
@@ -32,15 +40,49 @@ export const http = ( {
 	onFailure,
 	onProgress,
 	...options,
-}, action = null ) => ( {
-	type: WPCOM_HTTP_REQUEST,
-	body,
-	method,
-	path,
-	query: { ...query, apiVersion, apiNamespace },
-	formData,
-	onSuccess: onSuccess || action,
-	onFailure: onFailure || action,
-	onProgress: onProgress || action,
-	options,
-} );
+}, action = null ) => {
+	const actionProperties = {
+		onSuccess: onSuccess || action,
+		onFailure: onFailure || action,
+		onProgress: onProgress || action,
+		query: { ...query }
+	};
+
+	// * check parameters *
+
+	// `path` is not optional and it is a string
+	// `method` is not optional and its value can take either 'GET' or 'POST`
+	if (
+		( ! path || typeof path !== 'string' ) ||
+		( ! method || ( method !== 'GET' && method !== 'POST' ) )
+	) {
+		return badRequest();
+	}
+
+	// `apiVersion` and `apiNamespace` parameters:
+	// - `apiVersion` is optional, default value is `v1`
+	// - `apiVersion` and `apiNamespace` cannot be defined simultaneously
+	// - `apiVersion` must have the `v1, v2, ...` shape
+	// - `apiNamesapce` must have the `wp/v2, wpcom/v2, ...` shape
+	if ( typeof apiVersion === 'undefined' ) {
+		if ( typeof apiNamespace === 'undefined' ) {
+			actionProperties.query.apiVersion = 'v1';
+		} else if ( ! ( /^[a-z]+\/v\d+/ ).test( apiNamespace ) ) {
+			return badRequest();
+		} else {
+			actionProperties.query.apiNamespace = apiNamespace;
+		}
+	} else if ( ! ( /^v\d+/ ).test( apiVersion ) ) {
+		return badRequest();
+	} else {
+		actionProperties.query.apiVersion = apiVersion;
+	}
+
+	return {
+		...actionProperties,
+		type: WPCOM_HTTP_REQUEST,
+		path,
+		method,
+		body,
+	};
+};
