@@ -404,7 +404,11 @@ SitesList.prototype.getSite = function( siteID ) {
 		// clashes between a domain redirect and a Jetpack site, as well as domains
 		// on subfolders, but we also need to look for the `domain` as a last resort
 		// to cover mapped domains for regular WP.com sites.
-		return site.ID === siteID || site.slug === siteID || site.domain === siteID || site.wpcom_url === siteID;
+		return site.ID === siteID ||
+			site.slug === siteID ||
+			site.domain === siteID ||
+			site.wpcom_url === siteID ||
+			( site.options.is_domain_only && site.name === siteID );
 	} );
 };
 
@@ -425,7 +429,7 @@ SitesList.prototype.getPrimary = function() {
  */
 SitesList.prototype.select = function( siteID ) {
 	// Attempt to grab a site object from the passed ID
-	var site = this.getSite( siteID );
+	const site = this.getSite( siteID );
 
 	/**
 	 * If there's a valid site, hide all sites
