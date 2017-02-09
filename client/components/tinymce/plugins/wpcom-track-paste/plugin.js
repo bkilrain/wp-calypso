@@ -52,7 +52,7 @@ function trackPaste( editor ) {
 	}
 
 	function onPasteFromTinyMCEEditor( event ) {
-		recordEvent( 'tinymce-editor', toString( event.clipboardData.types ) );
+		recordEvent( 'visual-editor', toString( event.clipboardData.types ) );
 	}
 
 	function onPasteFromHTMLEditor( event ) {
