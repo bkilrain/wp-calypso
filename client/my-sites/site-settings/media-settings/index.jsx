@@ -59,7 +59,7 @@ class MediaSettings extends Component {
 					<JetpackModuleToggle
 						siteId={ props.siteId }
 						moduleSlug="carousel"
-						label={ props.translate( 'Transform image galleries into full screen slideshows.' ) }
+						label={ props.translate( 'Transform standard image galleries into full-screen slideshows.' ) }
 						disabled={ props.isRequestingSettings || props.isSavingSettings }
 						/>
 					<div className="media-settings__module-settings is-indented">
@@ -69,7 +69,7 @@ class MediaSettings extends Component {
 								checked={ props.fields.carousel_display_exif || false }
 								onChange={ props.handleToggle( 'carousel_display_exif' ) }
 								disabled={ props.isRequestingSettings || props.isSavingSettings || ! props.carouselActive } />
-							<span>{ props.translate( 'Show photo metadata (Exif) in carousel, when available' ) }</span>
+							<span>{ props.translate( 'Show photo metadata in carousel, when available.' ) }</span>
 						</FormLabel>
 						<FormLabel htmlFor="carousel_background_color">
 							{ props.translate( 'Background color' ) }
