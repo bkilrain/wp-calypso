@@ -42,7 +42,7 @@ import toolbarPinPlugin from './plugins/toolbar-pin/plugin';
 import insertMenuPlugin from './plugins/insert-menu/plugin';
 import embedReversalPlugin from './plugins/embed-reversal/plugin';
 import EditorHtmlToolbar from 'post-editor/editor-html-toolbar';
-import pasteTrack from './plugins/wpcom-paste-track/plugin';
+import trackPaste from './plugins/wpcom-track-paste/plugin';
 
 [
 	wpcomPlugin,
@@ -65,7 +65,7 @@ import pasteTrack from './plugins/wpcom-paste-track/plugin';
 	wptextpatternPlugin,
 	toolbarPinPlugin,
 	embedReversalPlugin,
-	pasteTrack
+	trackPaste
 ].forEach( ( initializePlugin ) => initializePlugin() );
 
 /**
@@ -131,7 +131,7 @@ const PLUGINS = [
 	'wpcom/contactform',
 	'wpcom/sourcecode',
 	'wpcom/embedreversal',
-	'wpcom/pastetrack'
+	'wpcom/trackpaste'
 ];
 
 if ( config.isEnabled( 'post-editor/insert-menu' ) ) {
