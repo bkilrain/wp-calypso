@@ -18,12 +18,16 @@ import {
 
 describe( '#fetchResetOptionsSuccess', () => {
 	it( 'should return ACCOUNT_RECOVERY_RESET_OPTIONS_RECEIVE action with options field.', () => {
-		const options = {
-			primaryEmail: 'primary@example.com',
-			primarySms: '12345678',
-			secondaryEmail: 'secondary@example.com',
-			secondarySms: '12345678',
-		};
+		const options = [
+			{
+				email: 'primary@example.com',
+				sms: '12345678',
+			},
+			{
+				email: 'secondary@example.com',
+				sms: '12345678',
+			},
+		];
 
 		const action = fetchResetOptionsSuccess( options );
 
